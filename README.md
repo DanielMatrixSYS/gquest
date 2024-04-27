@@ -2,6 +2,8 @@
 
 gQuest offers an advanced, World of Warcraft-inspired questing system designed to enhance the role-playing experience across all Garry's Mod gamemodes. It is built to be immersive, flexible, and highly customizable.
 
+### Please note, whilst the project has been recently released on github, the addon itself is 3, 5+ years old. The code standards back then were not as strict as it is today. The code standard I have today is not as bad as it was then. You have been warned.
+
 ## Features
 
 - **In-Game Quest NPCs:** Create NPCs within the game to offer quests.
