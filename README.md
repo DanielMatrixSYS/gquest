@@ -45,7 +45,7 @@ Feedback and contributions help improve gQuest. While my availability for featur
 
 ## Installation
 
-To install, simply extract the contents of the ZIP file into your `garrysmod/addons` folder and restart your server.
+To install, simply extract the contents of the ZIP file into your `garrysmod/addons` folder, rename the folder from `gquest-main` to just `gquest` then restart your server.
 
 ## A Quick Note
 
