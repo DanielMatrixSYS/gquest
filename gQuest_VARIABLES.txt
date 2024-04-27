@@ -1,0 +1,300 @@
+--[[------------------------------------------------------------------------------
+ *  Copyright (C) Fluffy(76561197976769128 - STEAM_0:0:8251700) - All Rights Reserved
+ *  Unauthorized copying of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+--]]------------------------------------------------------------------------------
+
+---
+--- This README file is not an actual quest, if you copy this over for your custom quest then you're bound to get errors!
+--- In this README file I will try to explain what each variable means.
+---
+
+local QUEST = {};
+
+--- QUEST.ID
+--- The ID of the quest, this can be any number but it NEEDS to be UNIQUE.
+--- So I would advice using long numbers like: 5813, etc.
+QUEST.ID = 1;
+
+--- QUEST.NPC
+--- This decides what NPC(s) should have this quest. If you don't know your quest npc id then you need to go in-game and type,
+--- !gquest -> NPCS -> Edit Existing NPCS and look to the left of the field and you'll find the quest npc.
+--- This can be a table too, to have it so multiple npcs can have the same quest.
+--- Change QUEST.NPC = 1 to QUEST.NPC = {1, 2};
+QUEST.NPC = 1;
+
+--- QUEST.Name
+--- This is the name of the quest.
+QUEST.Name = "Virus Threat";
+
+--- QUEST.PreQuestConversationEnabled
+--- This take a boolean of either true or false.
+--- This enables or disables pre quest converations.
+QUEST.PreQuestConversationEnabled = true;
+
+--- QUEST.PreQuestConversation
+--- If the above boolean is set to true then you can configure the pre quest conversation here:
+--- It might look complicated, but it's just a simple table.
+--- Here's an example from the sv_default1.lua quest, aka, Virus Threat.
+QUEST.PreQuestConversation = {
+    title = "City Virus - Introduction.", 
+    desc = "Ah, {name}! I'm glad you ran into me.\n\nI was studying a new virus which Dr. James and his apprentices cooked up in his laboratory.\n\nI was unable to finish the study because Dr. James had a breakthrough and needed the virus moved to the other side of town.\n\n30 minutes after they left however, it seemed they've gone off the radar.\n\nI need you to go and look for them. I would also carry a gun if I were you.. You know, just incase.", 
+    answers = {
+        ["What would happen if the virus broke loose?"] = {
+            title = "City Virus - Catastrophic.",
+            desc = "The result of it being broken could lead to some very catastrophic things.\n\nThe virus is highly infectious and if they've been exposed to it then I'm afraid the chances of their survival is... Extremely low, to say the least.",
+            answers = {
+                ["Why can't you go?"] = {
+                    title = "City Virus - Professional",
+                    desc = "Look, I'm a scientist and I have no experiences with weapons and I'm going to assume you do so, what do you say?\n\nWill you look for Dr. James and his crew?",
+                    answers = {
+                        ["This seems too much for me, I can't."] = gQuest.GOTO_EXIT,
+                        ["*sigh* I'll do it, but I need some more details."] = gQuest.GOTO_QUEST,
+                    }
+                },
+
+                ["What's in it for me?"] = {
+                    title = "City Virus - Rewards",
+                    desc = "You'll receive something for your hard work, of course.",
+                    answers = {
+                        ["Alright, let me see the quest."] = gQuest.GOTO_QUEST;
+                    }
+                },
+
+                ["I can't, sorry."] = gQuest.GOTO_EXIT,
+            }
+        },
+
+        ["Where do you think they are?"] = {
+            title = "City Virus - Position.",
+            desc = "They shouldn't be too far from here, use your quest tracker to find them.",
+            answers = {
+                ["Ok, Let me see the quest."] = gQuest.GOTO_QUEST,
+                ["Yeah let me just.. <Leave>"] = gQuest.GOTO_EXIT
+            }    
+        },
+        
+        ["Why don't you call the police?"] = {
+            title = "City Virus - Police.",
+            desc = "The police? How do you think they will react when I say theres a deadly virus missing?",
+            answers = {
+                ["Fine, I'll look for them."] = gQuest.GOTO_QUEST,
+                ["I don't think I'll be able to do it."] = gQuest.GOTO_EXIT
+            }
+        }
+    }
+};
+
+--- QUEST.Description
+--- This is the quest description.
+QUEST.Description = "Look for Dr. James and his crew, they should not be far from here.\n\nResults of the virus being loose could could lead to some mysterious things, afterall its heavily mutated rabies virus.";
+
+--- QUEST.Objective
+--- This is the quest objective.
+QUEST.Objective = "Look for Dr. James and his crew and be ready for anything.";
+
+--- QUEST.HUDObjective
+--- This is the quest objective for the hud.
+QUEST.HUDObjective = "{name}, you seriously need to look for Dr. James and his crew. {current}/{need}.";
+
+--- QUEST.OnCompleteDescription
+--- This bit of information is displayed once the user has completed their quest.
+QUEST.OnCompleteDescription = "Oh my god, {name}! I'm so glad you are OK.\n\nI heard what happened and I'm so sorry, I did not know this would happen, however, I am also extremely thrilled that you managed to pull this off.\n\nHere, your reward.. As promised.";
+
+--- QUEST.Rewards
+--- This is for the rewards.
+--- NOTE: This isn't actually the reward, just what they are given in text.
+QUEST.Rewards = "$10,000 and you unlock Quest: Zombie Threat";
+
+--- QUEST.LevelRequirement
+--- This is for level systems.
+--- What level does the player need to be in order to accept the quest?
+QUEST.LevelRequirement = 5;
+
+--- QUEST.ObjectiveRequirement
+--- How many objectives does the player need to kill / collect in order to complete the quest?
+QUEST.ObjectiveRequirement = 5;
+
+--- QUEST.ObjectiveClass
+--- This is for the quest tracker, what types of entities should we track?
+--- Objectives are spawned through the menu in-game, !gquest.
+QUEST.ObjectiveClass = "npc_zombie";
+
+--- QUEST.OneTimeQuest
+--- Is this a one time quest?
+QUEST.OneTimeQuest = true;
+
+--- QUEST.Cooldown
+--- If this isn't a one time quest then how many seconds should it stay on cooldown?
+QUEST.Cooldown = 3600;
+
+--- QUEST.DeliverUponCompletion
+--- Should the quest be automatically delivered so the player gets his reward once the quest has been completed?
+--- This means that the player does not need to return to the quest npc in order to get his rewards/deliver his quest, it is done automatically.
+---
+--- NOTE:
+--- NOTE:
+--- This will make the OnCompletion function and OnCompleteDescription variable in the quest file useless!
+QUEST.DeliverUponCompletion = false;
+
+--- QUEST.CompletionTime
+---
+--- PLEASE READ THE ENTIRE THING BEFORE YOU USE THIS VARIABLE.
+--- PLEASE READ THE ENTIRE THING BEFORE YOU USE THIS VARIABLE.
+---
+--- How long does the user have to complete this quest, in seconds?
+--- After x amount of seconds the quest will be automatically be removed the players quest log
+--- and he will have to re-accept the quest again in order to do it.
+--- all progress will be lost, too.
+---
+--- If the player leaves the server whilst being on a timer then the quest will also be automatically removed from his quest log
+--- This is to prevent strange behaviors.
+---
+--- If the server crashes then some strange behavior can occur, such as,
+--- the player being able to do the quest even though there is no timer.
+---
+--- I can't really build a safety net for when your server crashes so I would recommend not using this if your server,
+--- crashes frequently.
+---
+--- 300 = 5 minutes, 600 = 10 minutes, 900 = 15 minutes. 1200 = 20 minutes, etc.
+QUEST.CompletionTime = 600;
+
+--- QUEST.NeedsToHaveCompleted
+--- What quest does the player need to complete in order for them to see and accept this quest.
+--- This is only used for a couple default quests.
+---
+--- This variable was changed on the 28/01/19
+--- This variable can now be turned into a table of quests the user needs to have completed in order to accept whatever quest.
+--- This means that NeedsToHaveCompleted = 1 can be turned into NeedsToHaveCompleted = {1, 2};
+--- So the player needs to complete both one and two in order to accept whatever else quest.
+QUEST.NeedsToHaveCompleted = 1000;
+QUEST.NeedsTohaveCompleted = {1, 2, 3};
+
+--- QUEST.JobBlacklist
+--- This is for DarkRP and DarkRP derived gamemodes.
+--- What jobs can NOT accept this quest?
+--- Only one whitelist can be used at a time.
+QUEST.JobBlacklist = {["Citizen"] = true, ["Hobo"] = true};
+
+--- QUEST.JobWhitelist
+--- This is for DarkRP and DarkRP derived gamemodes.
+--- what jobs CAN accept this quest.
+--- Only one whitelist can be used at a time.
+--- This is the job name of the job. e.g Mayor, Civil Protection Chief
+--- These needs to be exactly how they are in-game.
+--- Same name, capital letters where needed, etc, etc.
+--- EXACT SAME.
+QUEST.JobWhitelist = {["Citizen"] = true, ["Hobo"] = true};
+
+--- QUEST.Enabled
+--- Should we enable this quest?
+QUEST.Enabled = true;
+
+--- QUEST.UsergroupsAllowed
+--- The only usergroups that are allowed to take this quest.
+QUEST.UsergroupsAllowed = {
+    ["superadmin"] = true,
+}
+
+--- QUEST.QuestArrow
+--- This is automatically enabled, there is no need to have this set to true.
+--- If you want to disable the quest tracker for certain quests then you can do that now.
+QUEST.QuestArrow = false;
+
+---
+--- OnAccept
+---
+function QUEST:OnAccept(ply)
+    return true;
+end
+
+---
+--- OnCompleted
+---
+function QUEST:OnCompleted(ply)
+    return true;
+end
+
+---
+--- OnObjectiveUpdated
+---
+function QUEST:OnObjectiveUpdated(ply, obj_count)
+    return true;
+end
+
+---
+--- OnObjectiveSpawned
+---
+function QUEST:OnObjectiveSpawned(obj)
+    print(obj, "spawned");
+
+
+    -- If this does not set the NPCs model then you might require a timer.
+    -- OR the model you're trying to set is either FUCKED or FUCKED.
+    -- OR the NPC does not like this model.
+    obj:SetModel("model");
+
+    -- This will give the NPC the weapon, weapon_357.
+    -- If the NPC does not equip or actually get the weapon then
+    -- the npc might not like this weapon or the npc does not need/support weapons.
+    obj:Give("weapon_357");
+
+    -- See http://wiki.garrysmod.com/page/Category:NPC for more information.
+
+    -- If the objective is not an NPC then you can do even more like, set its color, position, etc, etc.
+
+    return true;
+end
+
+---
+--- OnDelivered
+---
+function QUEST:OnDelivered(ply)
+    return true;
+end
+
+---
+--- OnQuestDisbanded
+---
+function QUEST:OnQuestDisbanded(ply)
+    return true;
+end
+
+---
+--- RewardFunction
+---
+function QUEST:RewardFunction(ply)
+    -- Before you copy paste this entire function
+    -- and replace it with the one in your quest
+    -- please be aware that this WILL cause errors
+    -- unless you don't have all ALL of the gamemodes/addons that im providing examples for.
+
+    -- DarkRP add money
+    ply:addMoney(5000);
+
+    -- Vrondakis Give XP
+    ply:addXP(5000);
+
+    -- Pointshop 1 Points
+    ply:PS_GivePoints(5000);
+
+    -- Pointshop 2 Standard Points
+    ply:PS2_AddStandardPoints(5000);
+
+    -- Pointshop 2 Premium Points
+    ply:PS2_AddPremiumPoints(5000);
+
+    -- Sublime Levels
+    ply:SL_AddExperience(1000);
+
+    return true;
+end
+
+---
+--- OnQuestInitialized
+---
+function QUEST:OnQuestInitialized()
+    return true;
+end
+
+gQuest.RegisterQuest(QUEST);
